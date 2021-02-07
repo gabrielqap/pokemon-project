@@ -58,7 +58,9 @@ O Get By Id foi criado somente o endpoint, sem nenhuma funcionalidade. Não cons
 
 Foram criados testes funcionais, para testar tanto a service quanto o repositório. Eles estão armazenados na src/test/java.
 
-#### Comentários
+#### Comentários Gerais
 
 O projeto tem um ciclo de vida diretamente relacionado com a API do pokemon, visto que as requests são feitas para obter os dados de lá. 
 No entanto, o código foi bem documentado afim de que facilite o entendimento de alguém que venha manusear futuramente e conta com interfaces, que facilitam a manutenção do código.
+
+Por questões pessoais e profissionais o projeto foi iniciado na terça (02/02) e entregue hoje (07/02).
