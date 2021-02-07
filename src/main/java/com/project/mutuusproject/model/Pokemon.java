@@ -11,6 +11,16 @@ public class Pokemon {
 
 	private String url;
 	
+	public Pokemon() {
+		
+	}
+	
+	public Pokemon(long id, String name, String url) {
+		this.id = id;
+		this.name = name;
+		this.url = url;
+	}
+
 	public long getId() {
 		return id;
 	}

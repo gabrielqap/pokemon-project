@@ -12,4 +12,9 @@ public interface PokemonRepository extends Repository<Pokemon, Long> {
 	Collection<Pokemon> findAll(List<Long> ids) throws SQLException;
 
 	void insertAll(List<Pokemon> pokemonsToAdd) throws SQLException;
+
+	void makeQuery(List<Long> ids);
+	
+	void delete(Long id) throws SQLException;
+
 }

@@ -18,8 +18,9 @@ import com.project.mutuusproject.repository.PokemonRepository;
 public class PokemonRepositoryImpl implements PokemonRepository {
 	private static final String FIND_ALL = " SELECT * FROM POKEMON WHERE ID IN ";
 	private static final String INSERT = " INSERT INTO POKEMON(ID,NAME,URL) VALUES (?,?,?) ";
-	private String query;
+	private static final String DELETE = " DELETE FROM POKEMON WHERE ID = (?) ";
 	private final Connection connection;
+	private String query;
 	
 	private PokemonRowMapper<ResultSet> pokemonRowMapper;
 
@@ -56,7 +57,9 @@ public class PokemonRepositoryImpl implements PokemonRepository {
 			}
 		}
 	}
-
+	
+	
+	@Override
 	public void makeQuery(List<Long> ids) {
 		query = FIND_ALL + "(";
 		for(Long id : ids) {
@@ -64,6 +67,16 @@ public class PokemonRepositoryImpl implements PokemonRepository {
 		}
 		query = query.substring(0, query.length() - 1) + ")";
 	}
+	
+	@Override
+	public void delete(Long id) throws SQLException {
+		try (PreparedStatement prepareStatement = this.connection.prepareStatement(DELETE)) {
+			prepareStatement.setLong(1, id);
+			prepareStatement.executeUpdate();
+		}
+
+	}
+	
 	
 	
 }
