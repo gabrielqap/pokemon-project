@@ -1,18 +1,23 @@
 package com.project.mutuusproject.model;
 
-
+/**
+ * Esta classe implementa os dados de um Pokemon. Portanto, ela
+ * contém os atributos nome, id e url. 
+ * 
+ * Exemplo de uso:
+ *
+ * Pokemon pokemon = new Pokemon(1L, "nomePokemon", "urlDoPokemon");
+ * 
+ */
 public class Pokemon {
 
 	private long id;
 	
-
 	private String name;
 	
-
 	private String url;
 	
 	public Pokemon() {
-		
 	}
 	
 	public Pokemon(long id, String name, String url) {
