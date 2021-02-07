@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +39,12 @@ public class PokemonController {
 														@RequestParam(defaultValue = "10", name="limit") Integer pageSize) throws SQLException {
 		List<Pokemon> list = pokemonService.getAllPokemons(pageNo, pageSize);
 		return new ResponseEntity<List<Pokemon>>(list, new HttpHeaders(), HttpStatus.OK); 
+	}
+	
+	@GetMapping("/pokemon/{id}")
+	public ResponseEntity<Pokemon> getAllPokemons(@PathVariable Long id) throws SQLException {
+		return null;
+
 	}
 	
 }

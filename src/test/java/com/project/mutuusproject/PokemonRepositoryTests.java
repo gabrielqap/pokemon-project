@@ -50,6 +50,7 @@ class PokemonRepositoryTests {
 		assertEquals(pokemonsToAdd.get(1).getId(), pokemonsInserted.get(1).getId());
 	}
 	
+	
 	@AfterEach
 	public void setDown() throws SQLException {
 		pokemonRepository.delete(pokemon.getId());

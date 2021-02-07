@@ -1,25 +1,16 @@
 package com.project.mutuusproject.service;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.LongStream;
-
-import org.apache.commons.collections4.IterableUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -31,13 +22,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.json.GsonJsonParser;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
-import com.google.gson.Gson;
-import com.project.mutuusproject.mapper.PokemonRowMapper;
 import com.project.mutuusproject.mapper.impl.PokemonResultSetRowMapperImpl;
 import com.project.mutuusproject.model.Pokemon;
 import com.project.mutuusproject.repository.PokemonRepository;
@@ -49,7 +33,18 @@ public class PokemonService {
 	public PokemonService(Connection connection) {
 		pokemonRepository = new PokemonRepositoryImpl(connection, new PokemonResultSetRowMapperImpl());
 	}
-
+	
+	/**
+     * Função principal gera e retorna a lista de Pokemons requisitada pelo usuário
+     *
+     *   Recebe o número de pokemons e a quantia que deseja.
+     *   Checa se esses pokemons estão no banco, se algum não estiver, faz a request para a API do Pokemon e armazena os valores novos.
+     *
+     * @param pageNo
+     * @param pageSize
+     * @return Retorna a lista de pokemons socilitada pelo usuário.
+     */
+	
 	public List<Pokemon> getAllPokemons(Integer pageNo, Integer pageSize) throws SQLException {
 		List<Long> range = LongStream.rangeClosed(pageNo+1, pageNo + pageSize)
 			    .boxed().collect(Collectors.toList());
@@ -66,7 +61,14 @@ public class PokemonService {
 		
 		return pokemons;
 	}
-
+	
+	/**
+     * Recebe uma lista de listas que contém as sequências de pokemons que são para obter na mesma request
+     * Faz a request para a API do pokemon e armazena esses pokemons em uma lista
+     *
+     * @param pokemonsToRequest
+     * @return Retorna uma lista de novos pokemons que foram obtidos pela API.
+     */
 	private List<Pokemon> doRequest(List<ArrayList<Long>> pokemonsToRequest) {
 		List<Pokemon> listOfPokemonsToAdd = new ArrayList<Pokemon>();
 		CloseableHttpClient httpclient = HttpClients.createDefault();
@@ -107,18 +109,21 @@ public class PokemonService {
 				} 
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
-			} finally {
 			}
-			
 		}
 		return listOfPokemonsToAdd;
 	}
-
+	
+	/**
+     * Recebe uma lista de ids dos pokemons que não foram encontrados.
+     * Monta uma lista de listas que vão conter sequências dos pokemons que devem ser obtidos em cada request.
+     *
+     * @param pokemonsNotFound
+     * @return Retorna uma lista de novos pokemons que foram obtidos pela API.
+     */
 	private ArrayList<ArrayList<Long>> makeRequest(List<Long> pokemonsNotFound) {
-		ListIterator<Long> it = pokemonsNotFound.listIterator();
 		ArrayList<ArrayList<Long>> listOfItens = new ArrayList<ArrayList<Long>>();
 		ArrayList<Long> list = new ArrayList<>();
-		boolean isDifferent = false;
 		for(int i = 0; i < pokemonsNotFound.size(); i++) {
 			list.add(pokemonsNotFound.get(i));
 			try {
@@ -134,7 +139,14 @@ public class PokemonService {
 		}
 		return listOfItens;
 	}
-
+	
+	/**
+     * Checa o ID dos pokemons que foram encontrados no banco e remove da lista de pokemons que serão obtidos na request para a API do Pokemon.
+     *
+     * @param pokemons
+     * @param range
+     * @return Retorna a lista de pokemons que não foram encontrados.
+     */
 	private List<Long> checkRequest(HashSet<Pokemon> pokemons, List<Long> range) {
 		List<Long> pokemonsFound = new ArrayList<>();
 		for(Pokemon p : pokemons) {
@@ -143,5 +155,7 @@ public class PokemonService {
 		range.removeAll(pokemonsFound);
 		return range;
 	}
+	
+	
 	
 }

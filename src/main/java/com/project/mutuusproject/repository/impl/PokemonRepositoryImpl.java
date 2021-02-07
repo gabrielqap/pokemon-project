@@ -6,10 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
 
 import com.project.mutuusproject.mapper.PokemonRowMapper;
 import com.project.mutuusproject.model.Pokemon;
@@ -28,7 +26,12 @@ public class PokemonRepositoryImpl implements PokemonRepository {
 		this.connection = connection;
 		this.pokemonRowMapper = pokemonRowMapper;
 	}
-
+	
+	/**
+     * Requisição para o banco de dados dos ids solicitados pelo usuário
+     * @param ids
+     * @return Retorna a lista de pokemons encontrada no banco
+     */
 	@Override
 	public Collection<Pokemon> findAll(List<Long> ids) throws SQLException {
 		makeQuery(ids);
@@ -46,6 +49,11 @@ public class PokemonRepositoryImpl implements PokemonRepository {
 		}
 		return pokemons;
 	}
+	
+	/**
+     * Insere no banco de dados os novos pokemons obtiddos
+     * @param pokemonsToAdd
+     */
 	@Override
 	public void insertAll(List<Pokemon> pokemonsToAdd) throws SQLException {
 		for(Pokemon p : pokemonsToAdd) {
@@ -59,6 +67,10 @@ public class PokemonRepositoryImpl implements PokemonRepository {
 	}
 	
 	
+	/**
+     * Monta a query a partir da quantidade de ids que deverão ser obtidos 
+     * @param ids
+     */
 	@Override
 	public void makeQuery(List<Long> ids) {
 		query = FIND_ALL + "(";
@@ -68,6 +80,11 @@ public class PokemonRepositoryImpl implements PokemonRepository {
 		query = query.substring(0, query.length() - 1) + ")";
 	}
 	
+	
+	/**
+     * Deleta do banco de dados o Pokemon através do ID
+     * @param id
+     */
 	@Override
 	public void delete(Long id) throws SQLException {
 		try (PreparedStatement prepareStatement = this.connection.prepareStatement(DELETE)) {

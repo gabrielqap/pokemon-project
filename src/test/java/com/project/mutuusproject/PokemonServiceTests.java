@@ -26,6 +26,7 @@ class PokemonServiceTests {
 	private Long id1 = 1L;
 	private Long id2 = 2L;
 	private Long id3 = 3L;
+	
 	@BeforeEach
 	public void setUp() throws ClassNotFoundException, SQLException {
 		connection = new ConnectionFactoryImpl().get();
