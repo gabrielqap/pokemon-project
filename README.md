@@ -1,5 +1,5 @@
-# Mutuus-project
-Projeto de aplicação para vaga de Desenvolvedor Java na Mutuus Seguro.
+# Pokemon-project
+API feita em Java utilizando a API pública de Pokemon.
 
 
 ## Instalação
